@@ -18,6 +18,10 @@ public class PlayerDto {
         this.age = player.getAge();
     }
 
+    public PlayerDto() {
+
+    }
+
     @Override
     public String toString() {
         return "PlayerDto{" +

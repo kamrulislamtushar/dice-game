@@ -9,6 +9,6 @@ public class NotFoundException extends AbstractThrowableProblem {
     private static final long serialVersionUID = 1L;
 
     public NotFoundException() {
-        super(URI.create("/api/v1/"), "404 NOT FOUND", Status.NOT_FOUND);
+        super(URI.create("/api/v1/"), "NO SUCH RECORD FOUND!", Status.NOT_FOUND);
     }
 }

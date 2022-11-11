@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 
 
 @Service
@@ -23,7 +24,6 @@ public class PlayerServiceImpl implements PlayerService {
             PlayerRepository playerRepository
     ) {
         this.playerRepository = playerRepository;
-
     }
 
     @Override
@@ -36,5 +36,15 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Page<Player> getAllPlayers(Pageable pageable) {
        return playerRepository.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Player> getPlayer(Long id) {
+        return playerRepository.findById(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        playerRepository.deleteById(id);
     }
 }

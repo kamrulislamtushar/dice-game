@@ -45,9 +45,8 @@ public final class HeaderUtil {
      * @param param a {@link String} object.
      * @return a {@link HttpHeaders} object.
      */
-    public static HttpHeaders createEntityCreationAlert( boolean enableTranslation, String entityName, String param) {
-        String message = enableTranslation ?  entityName + ".created"
-                : "A new " + entityName + " is created with identifier " + param;
+    public static HttpHeaders createEntityCreationAlert( String entityName, String param) {
+        String message = "A new " + entityName + " is created with identifier " + param;
         return createAlert( message, param);
     }
 
@@ -74,9 +73,8 @@ public final class HeaderUtil {
      * @param param a {@link String} object.
      * @return a {@link HttpHeaders} object.
      */
-    public static HttpHeaders createEntityDeletionAlert( boolean enableTranslation, String entityName, String param) {
-        String message = enableTranslation ?  entityName + ".deleted"
-                : "A " + entityName + " is deleted with identifier " + param;
+    public static HttpHeaders createEntityDeletionAlert( String entityName, String param) {
+        String message =  "A " + entityName + " is deleted with identifier " + param;
         return createAlert( message, param);
     }
 

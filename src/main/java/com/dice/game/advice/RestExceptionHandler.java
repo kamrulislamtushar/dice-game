@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @ControllerAdvice
@@ -200,6 +201,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatusName());
 	}
 
+	@ExceptionHandler({NoSuchElementException.class})
+	public ResponseEntity<Object> handleNoSuchElementException(final NotFoundException ex, final WebRequest request) {
+		log.info(ex.getClass().getName());
+		log.error("Error Log", ex);
+
+		final ApiErrorResponse apiError = new ApiErrorResponse(HttpStatus.NOT_FOUND,
+				HttpStatus.NOT_FOUND.value(), ex.getMessage(), "No Such element exists");
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatusName());
+	}
 
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
