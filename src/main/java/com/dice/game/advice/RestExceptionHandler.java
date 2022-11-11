@@ -1,5 +1,6 @@
 package com.dice.game.advice;
 
+import com.dice.game.exception.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
@@ -179,6 +180,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatusName());
 	}
 
+
 	@ExceptionHandler({ IOException.class }) // Or whatever exception type you want to handle
 	public ResponseEntity<Object> handleIOException(final IOException ex, final WebRequest request) {
 		log.info(ex.getClass().getName());
@@ -188,6 +190,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 				HttpStatus.PRECONDITION_REQUIRED.value(), ex.getMessage(), "Relation Exists");
 		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatusName());
 	}
+	@ExceptionHandler({NotFoundException.class})
+	public ResponseEntity<Object> handleNotFoundException(final NotFoundException ex, final WebRequest request) {
+		log.info(ex.getClass().getName());
+		log.error("Error Log", ex);
+
+		final ApiErrorResponse apiError = new ApiErrorResponse(HttpStatus.NOT_FOUND,
+				HttpStatus.NOT_FOUND.value(), ex.getMessage(), "No Such element exists");
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatusName());
+	}
+
 
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<Object> handleAll(final Exception ex, final WebRequest request) {
