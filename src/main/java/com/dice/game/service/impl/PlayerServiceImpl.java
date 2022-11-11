@@ -1,7 +1,5 @@
 package com.dice.game.service.impl;
 
-import com.dice.game.dto.PlayerDto;
-import com.dice.game.mapper.PlayerMapper;
 import com.dice.game.model.Player;
 import com.dice.game.repo.PlayerRepository;
 import com.dice.game.service.PlayerService;

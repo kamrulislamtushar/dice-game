@@ -1,14 +1,17 @@
 package com.dice.game.web.rest;
+import com.dice.game.dto.DiceDto;
 import com.dice.game.dto.PlayerDto;
 import com.dice.game.exception.BadRequestAlertException;
 import com.dice.game.mapper.PlayerMapper;
 import com.dice.game.model.Player;
+import com.dice.game.service.DiceApiService;
 import com.dice.game.service.PlayerService;
 import com.dice.game.utility.HeaderUtil;
 import com.dice.game.utility.PaginationUtil;
 import com.dice.game.utility.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +33,8 @@ public class PlayerController {
     private final PlayerService playerService;
     private final PlayerMapper playerMapper;
 
+    @Autowired
+    DiceApiService diceApiService;
     public PlayerController(
             PlayerService playerService,
             PlayerMapper playerMapper
