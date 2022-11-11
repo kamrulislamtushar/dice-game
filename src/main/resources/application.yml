@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    active: dev
+
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:mydb
+    username: sa
+    password: password
+  jpa:
+    open-in-view: true
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: false
+      hibernate.generate_statistics: true
+      # modify batch size as necessary
+      hibernate.jdbc.batch_size: 350
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.batch_versioned_date: true
+      # modify fetch size as necessary
+      hibernate.jdbc.fetch_size: 150
+      hibernate.criteria.literal_handling_mode: BIND
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
+      javax.persistence.validation.mode: none
+      spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+  servlet:
+   multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 25MB
+      max-request-size: 30MB
+
+    
+
+## Jackson binding config
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+    
