@@ -2,17 +2,15 @@ package com.dice.game.web.rest;
 
 import com.dice.game.dto.FinalScoreDetails;
 import com.dice.game.dto.GamePointDto;
+import com.dice.game.model.GameRecordDetails;
 import com.dice.game.service.GamePlayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+import java.util.List;
 @RestController
 @RequestMapping("/api/v1/games")
 public class GameController {
@@ -24,8 +22,14 @@ public class GameController {
 
     @PostMapping("/roll/dice")
     public ResponseEntity<FinalScoreDetails> startGame(@Valid @RequestBody GamePointDto gamePointDto) {
-        log.info("Request to start game for game point: {}", gamePointDto.toString());
+        log.info("REST Request to start game for game point: {}", gamePointDto.toString());
         return ResponseEntity.ok().body(gamePlayService.playGame(gamePointDto));
+    }
+
+    @GetMapping("/points")
+    public ResponseEntity<List<GameRecordDetails>> getAllPlayerScore() {
+        log.info("REST Request to get players score");
+        return ResponseEntity.ok().body(gamePlayService.currentScore());
     }
 
 }

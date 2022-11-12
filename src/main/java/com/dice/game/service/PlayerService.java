@@ -38,6 +38,10 @@ public interface PlayerService {
      */
     void delete(Long id);
 
-
+    /**
+     *
+     * @description get all available players
+     * @return List of players
+     */
     List<Player> getAllPlayers();
 }

@@ -22,7 +22,7 @@ public class GameRecord implements Serializable {
     private Long id;
 
     @NotNull
-    @Min(1)
+    @Min(10)
     @Max(Integer.MAX_VALUE)
     private Integer gamePoint;
 

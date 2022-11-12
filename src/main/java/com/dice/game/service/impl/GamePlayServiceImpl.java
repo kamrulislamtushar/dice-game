@@ -51,6 +51,7 @@ public class GamePlayServiceImpl implements GamePlayService {
         if (getCurrentGame() != null) {
             throw new BadRequestAlertException("Already a game is running. Please wait!", "GAME", "shortOfPlayers");
         }
+        log.info("Initialize game for gamePoint: {}", gamePointDto.getGamePoint());
         GameRecord gameRecord = initializeGame(gamePointDto, players);
 
         while (maxScore.get() <= gameRecord.getGamePoint()) {
@@ -69,7 +70,6 @@ public class GamePlayServiceImpl implements GamePlayService {
 
 
     private Integer rollTheDice(GameRecordDetails gameRecordDetails, Integer maxScore) {
-
         DiceDto diceValue = this.diceApiService.rollTheDice();
         log.info("Player Name: {}, Total Score: {}, Current Value of Dice: {}", gameRecordDetails.getPlayer().getName(), gameRecordDetails.getCurrentScore(), diceValue.getScore());
         switch (diceValue.getScore()) {
@@ -109,6 +109,7 @@ public class GamePlayServiceImpl implements GamePlayService {
     }
 
     private GameRecord getCurrentGame() {
+        log.info("Get current game record");
        return gameRecordService.fetchCurrentGame();
     }
 
@@ -116,7 +117,6 @@ public class GamePlayServiceImpl implements GamePlayService {
         GameRecord gameRecord = new GameRecord();
         gameRecord.setGamePoint(gamePointDto.getGamePoint());
         gameRecord.setDetails(new ArrayList<>());
-
         players.forEach(player -> {
             GameRecordDetails details = new GameRecordDetails();
             details.setPlayer(player);
@@ -126,6 +126,10 @@ public class GamePlayServiceImpl implements GamePlayService {
       return gameRecordService.saveInitialGame(gameRecord);
     }
 
-
+    @Override
+    public List<GameRecordDetails> currentScore() {
+        log.info("Getting current score information");
+        return gameRecordDetailsService.getAllPlayerScore();
+    }
 
 }

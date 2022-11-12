@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class GamePointDto {
     @NotNull
-    @Min(1)
+    @Min(10)
     private Integer gamePoint;
 
     @Override
