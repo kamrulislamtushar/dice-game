@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class DiceApiServiceImpl implements DiceApiService {
-    private final Logger log = LoggerFactory.getLogger(PlayerServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(DiceApiServiceImpl.class);
     private final DiceApiConfig diceApiConfig;
     public DiceApiServiceImpl(DiceApiConfig diceApiConfig) {
         this.diceApiConfig = diceApiConfig;

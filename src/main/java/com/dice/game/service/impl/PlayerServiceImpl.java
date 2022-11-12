@@ -1,5 +1,6 @@
 package com.dice.game.service.impl;
 
+import com.dice.game.exception.BadRequestAlertException;
 import com.dice.game.model.Player;
 import com.dice.game.repo.PlayerRepository;
 import com.dice.game.service.PlayerService;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class PlayerServiceImpl implements PlayerService {
 
     private final Logger log = LoggerFactory.getLogger(PlayerServiceImpl.class);
-
+    private final String ENTITY_NAME = "Player";
     private final PlayerRepository playerRepository;
     public PlayerServiceImpl(
             PlayerRepository playerRepository
@@ -26,6 +27,10 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player createPlayer(Player player) {
+        Integer playerCount = playerRepository.findAll().size();
+        if (playerCount == 4) {
+            throw new BadRequestAlertException("Only 4 player can be created for match!", ENTITY_NAME, "playerLimitReached");
+        }
         player =  playerRepository.save(player);
         log.info("Player created with id: {}", player.getId());
         return  player;

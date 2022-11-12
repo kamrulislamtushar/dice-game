@@ -2,10 +2,12 @@ package com.dice.game.dto;
 
 import com.dice.game.model.Player;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class PlayerDto {
     private Long id;
     private String name;
