@@ -4,8 +4,6 @@
 
 `/src/*` structure follows default Java structure.
 
-- `.yo-rc.json` - Yeoman configuration file
-
 ## Development
 
 
