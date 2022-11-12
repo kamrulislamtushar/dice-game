@@ -22,25 +22,6 @@ spring:
         show_sql: true
         format_sql: true
     show-sql: true
-
-  #email setting
-  mail:
-    host: ${EMAIL_SERVER_HOST}
-    port: ${EMAIL_SERVER_PORT}
-    username: ${EMAIL_SERVER_USERNAME}
-    password: ${EMAIL_SERVER_PASSWORD}
-
-    # Other properties
-    properties:
-      mail:
-        smtp:
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
-          # TLS , port 587
-          starttls:
-            enable: true
 logging:
   level:
     org:
