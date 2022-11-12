@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public interface PlayerService {
@@ -36,4 +37,7 @@ public interface PlayerService {
      * @return
      */
     void delete(Long id);
+
+
+    List<Player> getAllPlayers();
 }

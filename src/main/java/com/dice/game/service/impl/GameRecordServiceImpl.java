@@ -13,12 +13,19 @@ public class GameRecordServiceImpl implements GameRecordService {
     public GameRecordServiceImpl(GameRecordRepository gameRecordRepository) {
         this.gameRecordRepository = gameRecordRepository;
     }
+    @Override
     @Transactional
     public GameRecord saveInitialGame(GameRecord gameRecord) {
         return gameRecordRepository.save(gameRecord);
     }
 
+    @Override
     public GameRecord fetchCurrentGame() {
         return gameRecordRepository.findFirstByOrderById();
+    }
+
+    @Override
+    public void deleteGameHistory() {
+        gameRecordRepository.deleteAll();
     }
 }

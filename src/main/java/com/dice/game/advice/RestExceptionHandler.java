@@ -1,5 +1,6 @@
 package com.dice.game.advice;
 
+import com.dice.game.exception.BadRequestAlertException;
 import com.dice.game.exception.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -191,6 +194,27 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 				HttpStatus.PRECONDITION_REQUIRED.value(), ex.getMessage(), "Relation Exists");
 		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatusName());
 	}
+
+	@ExceptionHandler({BadRequestAlertException.class})
+	public ResponseEntity<Object> handleBadRequestException(final BadRequestAlertException ex, final WebRequest request) {
+		log.info(ex.getClass().getName());
+		log.error("Error Log", ex);
+
+		final ApiErrorResponse apiError = new ApiErrorResponse(HttpStatus.BAD_REQUEST,
+				HttpStatus.BAD_REQUEST.value(), ex.getMessage(), ex.getTitle());
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatusName());
+	}
+
+	@ExceptionHandler({URISyntaxException.class})
+	public ResponseEntity<Object> handleUriSyntaxException(final URISyntaxException ex, final WebRequest request) {
+		log.info(ex.getClass().getName());
+		log.error("Error Log", ex);
+
+		final ApiErrorResponse apiError = new ApiErrorResponse(HttpStatus.BAD_REQUEST,
+				HttpStatus.BAD_REQUEST.value(), ex.getMessage(), ex.getReason());
+		return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatusName());
+	}
+
 	@ExceptionHandler({NotFoundException.class})
 	public ResponseEntity<Object> handleNotFoundException(final NotFoundException ex, final WebRequest request) {
 		log.info(ex.getClass().getName());

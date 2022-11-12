@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.util.Optional;
 
 
@@ -49,5 +49,10 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void delete(Long id) {
         playerRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Player> getAllPlayers() {
+        return playerRepository.findAllByOrderById();
     }
 }

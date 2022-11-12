@@ -40,7 +40,7 @@ public class PlayerController {
     }
 
     @PostMapping
-    public ResponseEntity<PlayerDto> createPlayer(@Valid @RequestBody PlayerDto playerDto) throws URISyntaxException {
+    public ResponseEntity<PlayerDto> createPlayer(@Valid @RequestBody PlayerDto playerDto) {
         log.info("REST request to create player");
         if(playerDto.getId() !=  null) {
             throw new BadRequestAlertException("A new player cannot have an ID", ENTITY_NAME, "idexists");
@@ -48,7 +48,7 @@ public class PlayerController {
         Player player = playerMapper.toEntity(playerDto);
         player = playerService.createPlayer(player);
         return ResponseEntity
-                .created(new URI("api/v1/players/" + player.getId()))
+                .created(URI.create("api/v1/players/" + player.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, player.getId().toString()))
                 .body(playerMapper.toDto(player));
     }
