@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/games")
+@CrossOrigin("*")
 public class GameController {
     private final Logger log = LoggerFactory.getLogger(GameController.class);
     private final GamePlayService gamePlayService;

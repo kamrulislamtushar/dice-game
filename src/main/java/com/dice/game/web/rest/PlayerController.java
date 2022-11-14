@@ -24,6 +24,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/players")
+@CrossOrigin("*")
 public class PlayerController {
     private final Logger log = LoggerFactory.getLogger(PlayerController.class);
     private static final String ENTITY_NAME = "PLAYER";
