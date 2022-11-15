@@ -1,6 +1,6 @@
 package com.dice.game.web.rest;
 
-import com.dice.game.dto.FinalScoreDetails;
+import com.dice.game.dto.FinalScoreDetailsDto;
 import com.dice.game.dto.GamePointDto;
 import com.dice.game.model.GameRecordDetails;
 import com.dice.game.service.GamePlayService;
@@ -23,7 +23,7 @@ public class GameController {
     }
 
     @PostMapping("/roll/dice")
-    public ResponseEntity<FinalScoreDetails> startGame(@Valid @RequestBody GamePointDto gamePointDto) {
+    public ResponseEntity<FinalScoreDetailsDto> startGame(@Valid @RequestBody GamePointDto gamePointDto) {
         log.info("REST Request to start game for game point: {}", gamePointDto.toString());
         return ResponseEntity.ok().body(gamePlayService.playGame(gamePointDto));
     }
@@ -31,7 +31,7 @@ public class GameController {
     @GetMapping("/points")
     public ResponseEntity<List<GameRecordDetails>> getAllPlayerScore() {
         log.info("REST Request to get players score");
-        return ResponseEntity.ok().body(gamePlayService.currentScore());
+        return ResponseEntity.ok().body(gamePlayService.getCurrentScore());
     }
 
 }

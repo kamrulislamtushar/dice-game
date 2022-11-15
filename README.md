@@ -1,3 +1,14 @@
+## Intro
+DiceGame app is a simple REST api based game app which uses a special dice to
+calculate score for the players. The application is built with Java. 
+
+### Requirements
+
+1. Java 
+2. Maven 
+3. Docker (Optional)
+
+
 
 ## Project Structure
 

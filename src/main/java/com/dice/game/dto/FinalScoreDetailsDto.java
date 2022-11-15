@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FinalScoreDetails {
+public class FinalScoreDetailsDto {
     private Integer finalScore;
     private PlayerDto playerInfo;
 }

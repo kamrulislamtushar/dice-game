@@ -1,7 +1,7 @@
 package com.dice.game.service.impl;
 
 import com.dice.game.dto.DiceDto;
-import com.dice.game.dto.FinalScoreDetails;
+import com.dice.game.dto.FinalScoreDetailsDto;
 import com.dice.game.dto.GamePointDto;
 import com.dice.game.exception.BadRequestAlertException;
 import com.dice.game.mapper.PlayerMapper;
@@ -12,10 +12,9 @@ import com.dice.game.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -41,11 +40,11 @@ public class GamePlayServiceImpl implements GamePlayService {
     }
 
     @Override
-    public FinalScoreDetails playGame(GamePointDto gamePointDto) {
+    public FinalScoreDetailsDto playGame(GamePointDto gamePointDto) {
 
         AtomicReference<Integer> maxScore = new AtomicReference<>(Integer.MIN_VALUE);
         List<Player> players = playerService.getAllPlayers();
-        if (players.size() <2 || players.size() > 4) {
+        if (!CollectionUtils.isEmpty(players) && (players.size() <2 || players.size() > 4)) {
             throw new BadRequestAlertException("At least 2 and max 4 players needs to be on the board to start playing", "GAME", "shortOfPlayers");
         }
         if (getCurrentGame() != null) {
@@ -61,11 +60,11 @@ public class GamePlayServiceImpl implements GamePlayService {
         }
         log.info("Max score: {}", maxScore.get());
         GameRecordDetails gameRecordDetails = gameRecord.getDetails().stream().max(Comparator.comparingInt(GameRecordDetails::getCurrentScore)).get();
-        FinalScoreDetails finalScoreDetails = new FinalScoreDetails();
-        finalScoreDetails.setFinalScore(gameRecordDetails.getCurrentScore());
-        finalScoreDetails.setPlayerInfo(playerMapper.toDto(gameRecordDetails.getPlayer()));
+        FinalScoreDetailsDto finalScoreDetailsDto = new FinalScoreDetailsDto();
+        finalScoreDetailsDto.setFinalScore(gameRecordDetails.getCurrentScore());
+        finalScoreDetailsDto.setPlayerInfo(playerMapper.toDto(gameRecordDetails.getPlayer()));
         gameRecordService.deleteGameHistory();
-        return finalScoreDetails;
+        return finalScoreDetailsDto;
     }
 
 
@@ -74,7 +73,7 @@ public class GamePlayServiceImpl implements GamePlayService {
         log.info("Player Name: {}, Total Score: {}, Current Value of Dice: {}", gameRecordDetails.getPlayer().getName(), gameRecordDetails.getCurrentScore(), diceValue.getScore());
         switch (diceValue.getScore()) {
             case 1,2,3,5: {
-                if (gameRecordDetails.getCurrentScore() != null) {
+                if (!Objects.isNull(gameRecordDetails.getCurrentScore())) {
                     gameRecordDetails.setCurrentScore(gameRecordDetails.getCurrentScore() + diceValue.getScore());
                     maxScore = (Math.max(gameRecordDetails.getCurrentScore(), maxScore));
                     gameRecordDetailsService.saveScore(gameRecordDetails);
@@ -82,18 +81,14 @@ public class GamePlayServiceImpl implements GamePlayService {
                 break;
             }
             case 6: {
-                if (gameRecordDetails.getCurrentScore() == null) {
-                    gameRecordDetails.setCurrentScore(0);
-                } else {
-                    gameRecordDetails.setCurrentScore(gameRecordDetails.getCurrentScore() + 6);
-                }
+                gameRecordDetails.setCurrentScore(Objects.isNull(gameRecordDetails.getCurrentScore()) ? 0 : gameRecordDetails.getCurrentScore() + 6);
                 maxScore = (Math.max(gameRecordDetails.getCurrentScore(), maxScore));
                 gameRecordDetailsService.saveScore(gameRecordDetails);
                 rollTheDice(gameRecordDetails, maxScore);
                 break;
             }
             case 4: {
-                if (gameRecordDetails.getCurrentScore()!= null) {
+                if (!Objects.isNull(gameRecordDetails.getCurrentScore())) {
                     if (gameRecordDetails.getCurrentScore() >= 4) {
                         gameRecordDetails.setCurrentScore(gameRecordDetails.getCurrentScore() - 4);
                     } else {
@@ -127,7 +122,7 @@ public class GamePlayServiceImpl implements GamePlayService {
     }
 
     @Override
-    public List<GameRecordDetails> currentScore() {
+    public List<GameRecordDetails> getCurrentScore() {
         log.info("Getting current score information");
         return gameRecordDetailsService.getAllPlayerScore();
     }
